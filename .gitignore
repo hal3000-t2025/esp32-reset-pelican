@@ -1,0 +1,22 @@
+# Build output and tools
+.pio/
+__pycache__/
+.claude/
+preview/
+
+# Personal: full flash dump of the original device (contains private Wi-Fi config)
+backups/
+*.bin
+
+# 01Studio's schematic, not ours to redistribute
+pyClock_Sch.pdf
+schematic-*.png
+
+# Early experiments, superseded by render_pelican.py
+frames/
+include/frames.h
+pelican_bike.py
+main.py
+render_frames.py
+generate_cpp_assets.py
+preview-frames.png

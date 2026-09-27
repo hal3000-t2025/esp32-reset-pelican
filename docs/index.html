@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>鹈鹕重置屏 使用说明</title>
+<meta name="description" content="一只骑车的鹈鹕，替你盯着 Codex 额度什么时候重置。桌面小屏的使用说明：三种画面、一个按键、手机配网、常见问题。">
+<style>
+:root {
+  --bg: #fae4b9;
+  --surface: #fff7e6;
+  --surface-2: #f7cf94;
+  --text: #281e24;
+  --muted: #6b5a52;
+  --line: #e2c48f;
+  --accent: #008a88;
+  --warn: #e12d19;
+  --orange: #ff8700;
+  --bezel: #1f191b;
+  --shadow: 0 10px 30px rgba(80, 50, 20, .16);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1c1618;
+    --surface: #271f22;
+    --surface-2: #3a2c24;
+    --text: #f6ead6;
+    --muted: #bba99a;
+    --line: #463830;
+    --accent: #2fc0bd;
+    --warn: #ff6a52;
+    --orange: #ff9a2a;
+    --bezel: #0e0b0c;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1c1618; --surface: #271f22; --surface-2: #3a2c24; --text: #f6ead6; --muted: #bba99a;
+  --line: #463830; --accent: #2fc0bd; --warn: #ff6a52; --orange: #ff9a2a; --bezel: #0e0b0c;
+  --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.75 -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--accent); }
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+header.hero { padding: 48px 0 24px; }
+.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.kicker { font-size: 14px; font-weight: 700; letter-spacing: .08em; color: var(--accent); margin: 0; }
+h1 { font-size: clamp(34px, 7vw, 52px); line-height: 1.15; margin: 6px 0 14px; letter-spacing: -.01em; }
+.lede { font-size: 18px; color: var(--muted); margin: 0 0 20px; max-width: 30em; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.toc a {
+  display: inline-block; padding: 6px 14px; border-radius: 999px;
+  background: var(--surface); border: 1.5px solid var(--line);
+  color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600;
+}
+.toc a:hover { border-color: var(--text); }
+
+.screen {
+  background: var(--bezel); padding: 12px; border-radius: 22px; box-shadow: var(--shadow);
+  width: fit-content;
+}
+.screen img { width: 240px; height: 240px; border-radius: 8px; image-rendering: auto; }
+.screen.big img { width: 264px; height: 264px; }
+
+section { padding: 36px 0; border-top: 1.5px dashed var(--line); }
+h2 { font-size: 28px; margin: 0 0 6px; }
+h2 + .sub { margin: 0 0 24px; color: var(--muted); }
+h3 { font-size: 19px; margin: 0 0 6px; }
+
+.scenes { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.card {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px;
+  padding: 18px; display: flex; flex-direction: column; gap: 12px;
+}
+.card .screen { margin: 0 auto; }
+.tag {
+  display: inline-block; font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 999px;
+  background: var(--surface-2); color: var(--text); margin-bottom: 4px;
+}
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: 14px; color: var(--muted); font-weight: 700; background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+.table-scroll { overflow-x: auto; border: 1.5px solid var(--line); border-radius: 14px; }
+code { font: 14px ui-monospace, Menlo, monospace; background: var(--surface-2); padding: 1px 6px; border-radius: 6px; }
+
+.keys td img { width: 176px; height: auto; border-radius: 10px; }
+.hold { font-weight: 800; white-space: nowrap; }
+
+.note {
+  background: var(--surface); border-left: 5px solid var(--orange); border-radius: 10px;
+  padding: 12px 16px; margin: 18px 0 0; font-size: 15px;
+}
+.note.warn { border-left-color: var(--warn); }
+
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 28px; }
+.steps > li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; }
+.steps > li::before {
+  counter-increment: step; content: counter(step);
+  width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff;
+  display: grid; place-items: center; font-weight: 800; font-size: 18px; margin-top: 2px;
+}
+.step-body p { margin: 0 0 10px; }
+.pair { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; margin-top: 8px; }
+.caption { font-size: 13px; color: var(--muted); margin-top: 8px; text-align: center; }
+
+.statuses { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 12px; }
+.statuses figure { margin: 0; }
+.statuses img { width: 100%; border-radius: 10px; border: 6px solid var(--bezel); }
+.statuses figcaption { font-size: 13px; color: var(--muted); text-align: center; margin-top: 6px; }
+
+/* Phone mock-up of the setup page, same styles as the page the device serves. */
+.phone {
+  width: 280px; background: var(--bezel); border-radius: 38px; padding: 14px; box-shadow: var(--shadow);
+}
+.phone-screen {
+  background: #fae4b9; color: #281e24; border-radius: 26px; padding: 26px 18px 22px;
+  font-size: 14px; line-height: 1.5; min-height: 470px;
+}
+.phone-screen .bar { width: 90px; height: 6px; border-radius: 3px; background: #281e24; opacity: .8; margin: -12px auto 18px; }
+.phone-screen h4 { font-size: 19px; margin: 0 0 2px; }
+.phone-screen .muted { color: #6b5a52; margin: 0 0 6px; }
+.phone-screen label { display: block; font-weight: 700; margin: 14px 0 5px; }
+.phone-screen .field {
+  border: 2px solid #281e24; border-radius: 10px; background: #fffcf0; padding: 9px 11px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.phone-screen .field.hint { color: #9a8a80; margin-top: 7px; }
+.phone-screen .link { color: #008a88; text-decoration: underline; margin: 6px 0 0; font-size: 13px; }
+.phone-screen .btn { margin-top: 18px; background: #281e24; color: #fffcf0; font-weight: 800; text-align: center; border-radius: 10px; padding: 11px; }
+.phone-screen .ok { color: #008a88; font-weight: 700; margin-top: 14px; }
+
+details {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
+  padding: 0 16px; margin-bottom: 10px;
+}
+summary { cursor: pointer; font-weight: 700; padding: 14px 0; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "＋"; color: var(--accent); margin-right: 8px; font-weight: 800; }
+details[open] summary::before { content: "－"; }
+details > div { padding: 0 0 14px; color: var(--muted); }
+details > div p { margin: 0 0 8px; }
+
+.specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.spec { background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.spec b { display: block; font-size: 13px; color: var(--muted); font-weight: 700; }
+.spec span { font-size: 17px; font-weight: 700; }
+
+footer { padding: 32px 0 56px; color: var(--muted); font-size: 14px; border-top: 1.5px dashed var(--line); }
+
+@media (max-width: 680px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-grid .screen { margin: 8px auto 0; }
+  .screen.big img { width: 240px; height: 240px; }
+  .keys td img { width: 140px; }
+  .phone { margin: 0 auto; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="kicker">RESET PELICAN · 使用说明</p>
+      <h1>鹈鹕重置屏</h1>
+      <p class="lede">一只骑车的鹈鹕，替你盯着 Codex 额度什么时候重置。快重置了，它拼命蹬；重置完了，它瘫在地上歇；平时，它就在那儿划水。</p>
+      <nav aria-label="目录">
+        <ul class="toc">
+          <li><a href="#scenes">三种画面</a></li>
+          <li><a href="#key">一个按键</a></li>
+          <li><a href="#setup">第一次配网</a></li>
+          <li><a href="#modes">两种模式</a></li>
+          <li><a href="#faq">常见问题</a></li>
+          <li><a href="#specs">规格</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="screen big"><img src="img/idle.gif" alt="鹈鹕双脚蹬地、拖着腿滑行，顶部写着日常划水中" width="264" height="264"></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="scenes">
+  <h2>三种画面</h2>
+  <p class="sub">联网后，设备每 5 分钟查一次重置状态，自己决定放哪一段。</p>
+  <div class="scenes">
+    <article class="card">
+      <div class="screen"><img src="img/idle.gif" alt="日常划水中：双脚蹬地滑行" width="240" height="240" loading="lazy"></div>
+      <div>
+        <span class="tag">平时</span>
+        <h3>日常划水中</h3>
+        <p>没有重置消息。鹈鹕不踩脚蹬，两脚往地上一蹬，拖着腿滑一段，眯着眼吹口哨，忽远忽近地绕着走。</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="screen"><img src="img/ride.gif" alt="即将重置！使劲蹬！腿蹬出残影" width="240" height="240" loading="lazy"></div>
+      <div>
+        <span class="tag">36 小时内要重置</span>
+        <h3>即将重置！使劲蹬！</h3>
+        <p>重置快来了。鹈鹕骑着儿童车拼命蹬，上身一本正经，腿蹬出了残影，汗往后甩。</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="screen"><img src="img/rest.gif" alt="已重置！歇一歇…鹈鹕仰面躺地" width="240" height="240" loading="lazy"></div>
+      <div>
+        <span class="tag">重置后 72 小时内</span>
+        <h3>已重置！歇一歇…</h3>
+        <p>刚重置完。鹈鹕仰面瘫在地上，蚊香眼，肚子一起一伏；车翻在一边，前轮还在空转。</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="table-scroll" style="margin-top:24px">
+    <table>
+      <thead><tr><th>36 小时内即将重置</th><th>72 小时内刚重置完</th><th>显示</th></tr></thead>
+      <tbody>
+        <tr><td>是</td><td>任意</td><td><b>使劲蹬</b></td></tr>
+        <tr><td>否</td><td>是</td><td><b>歇一歇</b></td></tr>
+        <tr><td>否</td><td>否</td><td><b>日常划水中</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">两件事同时成立时，优先显示「使劲蹬」：快要重置是更新的消息。</p>
+</section>
+
+<section id="key">
+  <h2>一个按键</h2>
+  <p class="sub">板子侧边只有一个按键。所有动作都在<b>松手时</b>执行；按住期间，屏幕中间会告诉你松手后会发生什么。</p>
+  <div class="table-scroll">
+    <table class="keys">
+      <thead><tr><th>按住多久</th><th>按住时屏幕提示</th><th>松手后</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="hold">不到 3 秒</td>
+          <td>无</td>
+          <td>演示模式：换下一个画面<br>正式模式：马上刷新一次<br>配网中：退出配网</td>
+        </tr>
+        <tr>
+          <td class="hold">3 – 10 秒</td>
+          <td><img src="img/banner_to_live.png" alt="提示条：切到正式模式，松手确认，按住 10 秒配网" width="176" height="62"></td>
+          <td>在演示模式和正式模式之间切换</td>
+        </tr>
+        <tr>
+          <td class="hold">10 秒以上</td>
+          <td><img src="img/banner_to_setup.png" alt="提示条：进入配网，松手确认" width="176" height="62"></td>
+          <td>进入配网，换一个 Wi-Fi</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note warn"><b>插电时别按住按键。</b>这个键同时是芯片的 BOOT 键，插 USB 那一刻按着它，设备会进入下载模式，屏幕不亮。拔掉重插就好。</p>
+</section>
+
+<section id="setup">
+  <h2>第一次配网</h2>
+  <p class="sub">不用电脑。一部手机，两分钟。</p>
+  <ol class="steps">
+    <li>
+      <div class="step-body">
+        <h3>让设备进入配网</h3>
+        <p>新设备第一次切到正式模式（按住 3 秒后松手），会直接进入配网。以后想换 Wi-Fi，按住 10 秒后松手。屏幕会变成这样，中间的方框里是设备开出的热点名字，每台都不一样。</p>
+        <div class="pair">
+          <figure style="margin:0">
+            <div class="screen"><img src="img/setup_wait.png" alt="配网模式屏幕：显示热点名 Pelican-A1B2 和三个步骤" width="240" height="240" loading="lazy"></div>
+          </figure>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <h3>手机连上这个热点</h3>
+        <p>在手机的 Wi-Fi 设置里找到 <code>Pelican-XXXX</code>（后四位以屏幕上为准），直接连，不需要密码。连上后手机一般会自动弹出配网页面；没弹出的话，用浏览器打开 <code>192.168.4.1</code>。</p>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <h3>选 Wi-Fi，填密码，点连接</h3>
+        <p>页面会列出设备扫描到的网络，信号强的在前。列表里没有的，可以在下面手动输入名字。</p>
+        <div class="pair">
+          <div class="phone" role="img" aria-label="手机上的配网页面示意">
+            <div class="phone-screen">
+              <div class="bar"></div>
+              <h4>给鹈鹕连上 Wi-Fi</h4>
+              <p class="muted">只支持 2.4 GHz 网络。</p>
+              <label>Wi-Fi 名称</label>
+              <div class="field"><span>我家的 Wi-Fi</span><span>▾</span></div>
+              <div class="field hint">列表里没有？在这里手动输入</div>
+              <p class="link">重新扫描</p>
+              <label>密码</label>
+              <div class="field"><span>••••••••••</span></div>
+              <div class="btn">连接</div>
+              <p class="ok">连好了！鹈鹕马上进入正式模式，可以关掉这个页面。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="step-body">
+        <h3>看屏幕上的状态</h3>
+        <p>手机页面和设备屏幕会同步显示进度。连上后，设备记住这个 Wi-Fi，8 秒后自动进入正式模式，开始显示真实的重置状态。</p>
+        <div class="statuses">
+          <figure><img src="img/setup_phone.png" alt="手机已连上" width="240" height="240" loading="lazy"><figcaption>手机已连上热点</figcaption></figure>
+          <figure><img src="img/setup_connecting.png" alt="正在连接" width="240" height="240" loading="lazy"><figcaption>正在连接</figcaption></figure>
+          <figure><img src="img/setup_fail.png" alt="连接失败" width="240" height="240" loading="lazy"><figcaption>失败：改密码再试</figcaption></figure>
+          <figure><img src="img/setup_ok.png" alt="连好了" width="240" height="240" loading="lazy"><figcaption>成功</figcaption></figure>
+        </div>
+      </div>
+    </li>
+  </ol>
+  <p class="note">配网页面 10 分钟没人操作，设备会自动退出，回到之前的模式。</p>
+</section>
+
+<section id="modes">
+  <h2>两种模式</h2>
+  <p class="sub">按住 3 – 10 秒后松手，在两者之间切换。设备会记住你的选择，断电重启也不变。</p>
+  <div class="scenes">
+    <article class="card">
+      <div class="screen"><img src="img/banner_demo.png" alt="提示条：演示模式，短按切换动画" width="176" height="62" style="width:176px;height:auto"></div>
+      <div>
+        <h3>演示模式</h3>
+        <p>不联网。短按一下换一个画面，适合拿给朋友看全部动画。</p>
+      </div>
+    </article>
+    <article class="card">
+      <div class="screen"><img src="img/banner_live.png" alt="提示条：正式模式，跟随重置状态" width="176" height="62" style="width:176px;height:auto"></div>
+      <div>
+        <h3>正式模式</h3>
+        <p>连 Wi-Fi，每 5 分钟查一次重置状态，自动选画面。短按马上刷新一次。</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="faq">
+  <h2>常见问题</h2>
+  <p class="sub">大多数问题，重新配一次网就能解决。</p>
+
+  <details>
+    <summary>右上角有个小红点</summary>
+    <div>
+      <p>正式模式下，最近一次查询失败了：可能是 Wi-Fi 断了，也可能是查询服务器暂时连不上。设备会保持上一次的画面，5 分钟后自动再试，恢复后红点自己消失。</p>
+      <p>想马上重试，短按一下。一直有红点，检查路由器，或者按住 10 秒重新配网。</p>
+    </div>
+  </details>
+  <details>
+    <summary>配网一直失败</summary>
+    <div>
+      <p>最常见的三个原因：密码输错了；选的是 5 GHz 网络（设备只支持 2.4 GHz，双频路由器通常会有一个名字带 5G 的，别选它）；设备离路由器太远。</p>
+    </div>
+  </details>
+  <details>
+    <summary>手机连上热点后没有弹出页面</summary>
+    <div>
+      <p>用手机浏览器打开 <code>192.168.4.1</code>。部分手机会提示「此网络无法访问互联网」，选择保持连接即可。</p>
+    </div>
+  </details>
+  <details>
+    <summary>想换一个 Wi-Fi</summary>
+    <div>
+      <p>按住按键 10 秒，看到「进入配网」后松手，重新走一遍配网。新的 Wi-Fi 会替换旧的。</p>
+    </div>
+  </details>
+  <details>
+    <summary>插上电，屏幕不亮</summary>
+    <div>
+      <p>插电的时候是不是按着按键？那样会进下载模式。松开按键，拔掉重插。</p>
+    </div>
+  </details>
+  <details>
+    <summary>「歇一歇」要显示多久</summary>
+    <div>
+      <p>重置完成后最多 72 小时。期间如果又收到「36 小时内要重置」的消息，会提前切回「使劲蹬」。</p>
+    </div>
+  </details>
+  <details>
+    <summary>重置状态的数据从哪来</summary>
+    <div>
+      <p>设备向一台查询服务器请求状态，服务器汇总公开的 Codex 重置公告。设备只读这个结果，不需要登录任何账号，也不会上传你的数据。</p>
+    </div>
+  </details>
+  <details>
+    <summary>能一直插着吗？费电吗</summary>
+    <div>
+      <p>可以一直插着。屏幕背光常亮，整机大约半瓦，比手机充电器待机稍多一点。</p>
+    </div>
+  </details>
+</section>
+
+<section id="specs">
+  <h2>规格</h2>
+  <p class="sub">小东西，参数也不多。</p>
+  <div class="specs">
+    <div class="spec"><b>屏幕</b><span>1.54 寸 240 × 240</span></div>
+    <div class="spec"><b>主控</b><span>ESP32-C3</span></div>
+    <div class="spec"><b>网络</b><span>Wi-Fi 2.4 GHz</span></div>
+    <div class="spec"><b>供电</b><span>USB-C 5 V</span></div>
+    <div class="spec"><b>刷新</b><span>每 5 分钟查一次</span></div>
+    <div class="spec"><b>动画</b><span>9 – 14 帧 / 秒</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    想自己做一台？硬件清单和复刻步骤见 <a href="https://github.com/hal3000-t2025/esp32-reset-pelican#readme">项目 README</a>。
+  </div>
+</footer>
+
+</body>
+</html>
